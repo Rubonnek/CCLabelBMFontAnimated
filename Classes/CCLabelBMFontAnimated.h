@@ -1,35 +1,33 @@
 //
-//  CCLabelBMFontAnimated.h
-//  HelloCpp
+//  CCLabelAnimated.h
+//  CCLabelAnimated
 //
-//  Created by Steve Barnegren on 11/11/2013.
+//  Created by Steven Barnegren on 23/03/2015.
 //
 //
 
-#ifndef __HelloCpp__CCLabelBMFontAnimated__
-#define __HelloCpp__CCLabelBMFontAnimated__
+#ifndef __CCLabelAnimated__CCLabelAnimated__
+#define __CCLabelAnimated__CCLabelAnimated__
 
-#include <iostream>
-#include "cocos2d.h"
+#include <stdio.h>
 
-class CCLabelBMFontAnimated : public cocos2d::LabelBMFont{
-    
-    
-    
+class CCLabelBMFontAnimated : public cocos2d::Label {
 public:
     
     //Override LabelBMFont CREATE FUNCTIONS, RETURNING CCLabelBMFontAnimated
-    CREATE_FUNC(CCLabelBMFontAnimated);
-    static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment, cocos2d::Point imageOffset);
-	static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment);
-	static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width);
-	static CCLabelBMFontAnimated * create(const char *str, const char *fntFile);
-        
+    //CREATE_FUNC(CCLabelBMFontAnimated);
+    static CCLabelBMFontAnimated* createWithBMFont(const std::string& bmfontFilePath, const std::string& text,const cocos2d::TextHAlignment& alignment /* = TextHAlignment::LEFT */, int maxLineWidth /* = 0 */, const cocos2d::Vec2& imageOffset /* = Vec2::ZERO */);
+
+//    static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment, cocos2d::Point imageOffset);
+//    static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment);
+//    static CCLabelBMFontAnimated * create(const char *str, const char *fntFile, float width);
+//    static CCLabelBMFontAnimated * create(const char *str, const char *fntFile);
+    
     //FUNCTIONS TO SET BASIC CHARACTER SPRITE PROPERTIES AT INDEX
     void setCharScale(int index, float s);
     void setCharOpacity(int index, float o);
     void setCharRotation(int index, float r);
-
+    
     //FUNCTIONS TO SET BASIC PROPERTIES OF ALL CHARACTER SPRITES
     void setAllCharsScale(float s);
     void setAllCharsOpacity(float o);
@@ -44,27 +42,27 @@ public:
     void runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion);
     void stopActionsOnAllSprites();
     
-        //for the 'run actions sequentially' functions, duration refers to the total time to complete actions on all letters, minus the duration of the action itself
+    //for the 'run actions sequentially' functions, duration refers to the total time to complete actions on all letters, minus the duration of the action itself
     void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion);
     void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion);
     void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration);
-
+    
     void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion);
     void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion);
     void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration);
-
+    
     
     
     //ANIMATIONS
     
-
+    
     //fly ins
     
     void animateInFlyInFromLeft(float duration);
     void animateInFlyInFromRight(float duration);
     void animateInFlyInFromTop(float duration);
     void animateInFlyInFromBottom(float duration);
-
+    
     //misc animate ins
     
     void animateInTypewriter(float duration);
@@ -73,32 +71,24 @@ public:
     void animateInRevealFromLeft(float duration);
     void animateInSpin(float duration, int spins);
     void animateInVortex(float duration, int spins);
-
+    
     //misc animations
     void animateSwell(float duration);
     void animateJump(float duration, float height);
     void animateStretchElastic(float stretchDuration, float releaseDuration, float stretchAmount);
     void animateRainbow(float duration);
     void flyPastAndRemove();
-
     
-
+    
+    
 private:
     
     void animateInVortex(bool removeOnCompletion, bool createGhosts, float duration, int spins);
+    int numLetters();
 
+    
+    
     
 };
 
-
-
-
-
-
-
-
-
-
-
-
-#endif /* defined(__HelloCpp__CCLabelBMFontAnimated__) */
+#endif /* defined(__CCLabelAnimated__CCLabelAnimated__) */

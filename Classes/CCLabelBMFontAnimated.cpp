@@ -1,8 +1,8 @@
 //
-//  CCLabelBMFontAnimated.cpp
-//  HelloCpp
+//  CCLabelAnimated.cpp
+//  CCLabelAnimated
 //
-//  Created by Steve Barnegren on 11/11/2013.
+//  Created by Steven Barnegren on 23/03/2015.
 //
 //
 
@@ -10,79 +10,98 @@
 
 //CREATE FUNCTIONS
 
-CCLabelBMFontAnimated *CCLabelBMFontAnimated::create(const char *str, const char *fntFile, float width/* = kLabelAutomaticWidth*/, cocos2d::TextHAlignment alignment/* = TextHAlignment::LEFT*/, cocos2d::Point imageOffset/* = Point::ZERO*/)
+CCLabelBMFontAnimated* CCLabelBMFontAnimated::createWithBMFont(const std::string& bmfontFilePath, const std::string& text,const cocos2d::TextHAlignment& alignment /* = TextHAlignment::LEFT */, int maxLineWidth /* = 0 */, const cocos2d::Vec2& imageOffset /* = Vec2::ZERO */)
 {
-    CCLabelBMFontAnimated *pRet = new CCLabelBMFontAnimated();
-    if(pRet && pRet->initWithString(str, fntFile, width, alignment, imageOffset))
+    auto ret = new CCLabelBMFontAnimated();
+    
+    if (ret && ret->setBMFontFilePath(bmfontFilePath,imageOffset))
     {
-        pRet->autorelease();
-        return pRet;
+        ret->setMaxLineWidth(maxLineWidth);
+        ret->setString(text);
+        ret->autorelease();
+        
+        return ret;
     }
-    CC_SAFE_DELETE(pRet);
-    return NULL;
+    
+    delete ret;
+    return nullptr;
 }
 
-CCLabelBMFontAnimated * CCLabelBMFontAnimated::create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment)
-{
-    return CCLabelBMFontAnimated::create(str, fntFile, width, alignment, cocos2d::Point::ZERO);
-}
 
-CCLabelBMFontAnimated * CCLabelBMFontAnimated::create(const char *str, const char *fntFile, float width)
-{
-    return CCLabelBMFontAnimated::create(str, fntFile, width, cocos2d::TextHAlignment::LEFT, cocos2d::Point::ZERO);
-}
-
-CCLabelBMFontAnimated * CCLabelBMFontAnimated::create(const char *str, const char *fntFile)
-{
-    return CCLabelBMFontAnimated::create(str, fntFile, cocos2d::kLabelAutomaticWidth, cocos2d::TextHAlignment::LEFT, cocos2d::Point::ZERO);
-}
+//CCLabelBMFontAnimated *CCLabelBMFontAnimated::create(const char *str, const char *fntFile, float width/* = kLabelAutomaticWidth*/, cocos2d::TextHAlignment alignment/* = TextHAlignment::LEFT*/, cocos2d::Point imageOffset/* = Point::ZERO*/)
+//{
+//    CCLabelBMFontAnimated *pRet = new CCLabelBMFontAnimated();
+//    if(pRet && pRet->initWithString(str, fntFile, width, alignment, imageOffset))
+//    {
+//        pRet->autorelease();
+//        return pRet;
+//    }
+//    CC_SAFE_DELETE(pRet);
+//    return NULL;
+//}
+//
+//CCLabelBMFontAnimated * CCLabelBMFontAnimated::create(const char *str, const char *fntFile, float width, cocos2d::TextHAlignment alignment)
+//{
+//    return CCLabelBMFontAnimated::create(str, fntFile, width, alignment, cocos2d::Point::ZERO);
+//}
+//
+//CCLabelBMFontAnimated * CCLabelBMFontAnimated::create(const char *str, const char *fntFile, float width)
+//{
+//    return CCLabelBMFontAnimated::create(str, fntFile, width, cocos2d::TextHAlignment::LEFT, cocos2d::Point::ZERO);
+//}
+//
+//CCLabelBMFontAnimated * CCLabelBMFontAnimated::create(const char *str, const char *fntFile)
+//{
+//    return CCLabelBMFontAnimated::create(str, fntFile, cocos2d::kLabelAutomaticWidth, cocos2d::TextHAlignment::LEFT, cocos2d::Point::ZERO);
+//}
+//
 
 
 #pragma mark - Set Basic Character Properties
 
 void CCLabelBMFontAnimated::setCharScale(int index, float s){
     
-    if (index >= getChildren()->count()) {
+    if (index >= numLetters()) {
         cocos2d::log("CCLabelBMFontAnimated - Could not set character sprite scale, index out of bounds");
         return;
     }
     
-    cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(index);
+    cocos2d::Sprite *charSprite = getLetter(index);
     charSprite->setScale(s);
 }
 
 void CCLabelBMFontAnimated::setCharOpacity(int index, float o){
     
-    if (index >= getChildren()->count()) {
+    if (index >= numLetters()) {
         cocos2d::log("CCLabelBMFontAnimated - Could not set character sprite opacity, index out of bounds");
         return;
     }
     
     GLubyte opacity = o;
-    cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(index);
+    cocos2d::Sprite *charSprite = getLetter(index);
     charSprite->setOpacity(opacity);
 }
 
 void CCLabelBMFontAnimated::setCharRotation(int index, float r){
     
-    if (index >= getChildren()->count()) {
+    if (index >= numLetters()) {
         cocos2d::log("CCLabelBMFontAnimated - Could not set character sprite rotation, index out of bounds");
         return;
     }
     
-    cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(index);
+    cocos2d::Sprite *charSprite = getLetter(index);
     charSprite->setRotation(r);
 }
 
 
 void CCLabelBMFontAnimated::setAllCharsScale(float s){
     
-    const int numChars = getChildren()->count();
+    const int numChars = numLetters();
     
     for (int i = 0; i < numChars; i++) {
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         charSprite->setScale(s);
-        }
+    }
 }
 
 
@@ -90,68 +109,87 @@ void CCLabelBMFontAnimated::setAllCharsOpacity(float o){
     
     GLubyte opacity = o;
     
-    const int numChars = getChildren()->count();
+    const int numChars = numLetters();
     
     for (int i = 0; i < numChars; i++) {
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         charSprite->setOpacity(opacity);
     }
 }
 
 void CCLabelBMFontAnimated::setAllCharsRotation(float r){
     
-    const int numChars = getChildren()->count();
+    const int numChars = numLetters();
     
     for (int i = 0; i < numChars; i++) {
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         charSprite->setRotation(r);
     }
 }
 
 void CCLabelBMFontAnimated::offsetAllCharsPositionBy(cocos2d::Point offset){
     
-    const int numChars = getChildren()->count();
+    const int numChars = numLetters();
     
     for (int i = 0; i < numChars; i++) {
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         charSprite->setPosition(cocos2d::Point(charSprite->getPosition().x + offset.x, charSprite->getPosition().y + offset.y));
     }
 }
 
+int CCLabelBMFontAnimated::numLetters(){
+    
+    int index = 0;
+    
+    for (; ; ) {
+        
+        if (getLetter(index) == nullptr) {
+            return index;
+        }
+        index++;
+    }
+    
+    return index;
+}
 
 #pragma mark - Run Custom Actions
 
 void CCLabelBMFontAnimated::runActionOnSpriteAtIndex(int index, cocos2d::FiniteTimeAction* action){
     
-    if (index >= getChildren()->count() || index < 0) {
+    if (index >= numLetters() || index < 0) {
         cocos2d::log("CCLabelBMFontAnimated::runActionOnSpriteAtIndex - index out of bounds");
         return;
     }
     
-    cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->objectAtIndex(index);
+    cocos2d::Sprite *charSprite = getLetter(index);
     charSprite->runAction(action);
     
 }
 
 
 void CCLabelBMFontAnimated::runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion){
-
-    const int numChars = getChildren()->count();
+    
+    const int numChars = numLetters();
     
     for (int i = 0; i < numChars; i++) {
         cocos2d::Action *actionCopy = action->clone();
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         
         if (i == numChars-1) { //if is the last character, run the call func actions
             
-            cocos2d::Array *actionsArray = cocos2d::Array::create();
-            actionsArray->addObject(actionCopy);
+            //cocos2d::Array *actionsArray = cocos2d::Array::create();
+            cocos2d::Vector<cocos2d::FiniteTimeAction*> actionsArray;
+            
+            actionsArray.pushBack((cocos2d::FiniteTimeAction*)actionCopy);
+            
+            //actionsArray->addObject(actionCopy);
             
             if (callFuncOnCompletion != nullptr) {
-                actionsArray->addObject(callFuncOnCompletion);
+                actionsArray.pushBack((cocos2d::FiniteTimeAction*)callFuncOnCompletion);
+                //actionsArray->addObject(callFuncOnCompletion);
             }
             if (removeOnCompletion) {
-                actionsArray->addObject(cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::removeFromParent, this)));
+                actionsArray.pushBack(cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::removeFromParent, this)));
             }
             cocos2d::Sequence *actionsSequence = cocos2d::Sequence::create(actionsArray);
             charSprite->runAction(actionsSequence);
@@ -175,18 +213,18 @@ void CCLabelBMFontAnimated::runActionOnAllSprites(cocos2d::Action* action, bool 
 
 void CCLabelBMFontAnimated::stopActionsOnAllSprites(){
     
-    const int numChars = getChildren()->count();
+    const int numChars = numLetters();
     
     for (int i = 0; i < numChars; i++) {
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         charSprite->stopAllActions();
     }
 }
 
 
 void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion){
-
-    const int numChars = getChildren()->count();
+    
+    const int numChars = numLetters();
     
     if (numChars < 2) {
         cocos2d::log("CCLabelBMFontAnimated - runActionOnAllSpritesSequentially() requires at least 2 children to operate");
@@ -198,18 +236,18 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTim
         cocos2d::DelayTime *delay = cocos2d::DelayTime::create((duration/(numChars-1)) *i);
         cocos2d::Action *actionCopy = action->clone();
         cocos2d::Sequence *delayAndAction = cocos2d::Sequence::create(delay, actionCopy, NULL);
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         
         if (i == numChars-1) { //if is the last character, run the call func actions
             
-            cocos2d::Array *actionsArray = cocos2d::Array::create();
-            actionsArray->addObject(delayAndAction);
+            cocos2d::Vector<cocos2d::FiniteTimeAction*> actionsArray;
+            actionsArray.pushBack(delayAndAction);
             
             if (callFuncOnCompletion != nullptr) {
-                actionsArray->addObject(callFuncOnCompletion);
+                actionsArray.pushBack(callFuncOnCompletion);
             }
             if (removeOnCompletion) {
-                actionsArray->addObject(cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::removeFromParent, this)));
+                actionsArray.pushBack(cocos2d::CallFunc::create(this, callfunc_selector(CCLabelBMFontAnimated::removeFromParent)));
             }
             cocos2d::Sequence *actionsSequence = cocos2d::Sequence::create(actionsArray);
             charSprite->runAction(actionsSequence);
@@ -233,8 +271,8 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTim
 }
 
 void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion){
-
-    const int numChars = getChildren()->count();
+    
+    const int numChars = numLetters();
     
     if (numChars < 2) {
         cocos2d::log("CCLabelBMFontAnimated - runActionOnAllSpritesSequentiallyReverse() requires at least 2 children to operate");
@@ -246,18 +284,18 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::Fi
         cocos2d::DelayTime *delay = cocos2d::DelayTime::create((duration/(numChars-1)) *((numChars-1)-i));
         cocos2d::Action *actionCopy = action->clone();
         cocos2d::Sequence *delayAndAction = cocos2d::Sequence::create(delay, actionCopy, NULL);
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         
         if (i == 0) { //if is the first character, run the call func actions
             
-            cocos2d::Array *actionsArray = cocos2d::Array::create();
-            actionsArray->addObject(delayAndAction);
+            cocos2d::Vector<cocos2d::FiniteTimeAction*> actionsArray;
+            actionsArray.pushBack(delayAndAction);
             
             if (callFuncOnCompletion != nullptr) {
-                actionsArray->addObject(callFuncOnCompletion);
+                actionsArray.pushBack(callFuncOnCompletion);
             }
             if (removeOnCompletion) {
-                actionsArray->addObject(cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::removeFromParent, this)));
+                actionsArray.pushBack(cocos2d::CallFunc::create(this, callfunc_selector(CCLabelBMFontAnimated::removeFromParent)));
             }
             cocos2d::Sequence *actionsSequence = cocos2d::Sequence::create(actionsArray);
             charSprite->runAction(actionsSequence);
@@ -265,7 +303,7 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::Fi
         else{ //if is not the first character, just run the action
             charSprite->runAction(delayAndAction);}
     }
-
+    
 }
 
 void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion){
@@ -286,7 +324,7 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::Fi
 void CCLabelBMFontAnimated::flyPastAndRemove(){
     
     cocos2d::Size visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
-
+    
     float rescaleFactor = 1/getScale(); //if the label has been scaled down, all the action coordinates will be too small, rescale factor scales them up
     
     offsetAllCharsPositionBy(cocos2d::Point(-visibleSize.width * rescaleFactor, 0));
@@ -313,29 +351,29 @@ void CCLabelBMFontAnimated::flyPastAndRemove(){
 }
 
 void CCLabelBMFontAnimated::animateInTypewriter(float duration){
-
+    
     //set all the characters scale to zero
     setAllCharsScale(0);
     
     cocos2d::ScaleTo *appear = cocos2d::ScaleTo::create(0, 1);
     
     runActionOnAllSpritesSequentially(appear, duration);
-
+    
 }
 
 void CCLabelBMFontAnimated::animateInFlyInFromLeft(float duration){
-
+    
     cocos2d::Size visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     float rescaleFactor = 1/getScale(); //if the label has been scaled down, all the action coordinates will be too small, rescale factor scales them up
     float offsetX = visibleSize.width * rescaleFactor;
     offsetAllCharsPositionBy(cocos2d::Point(-offsetX, 0));
-
+    
     cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Point(offsetX, 0));
     cocos2d::EaseExponentialOut *flyInEase = cocos2d::EaseExponentialOut::create(flyIn);
     
     runActionOnAllSpritesSequentially(flyInEase, duration);
     
-
+    
 }
 
 void CCLabelBMFontAnimated::animateInFlyInFromRight(float duration){
@@ -349,7 +387,7 @@ void CCLabelBMFontAnimated::animateInFlyInFromRight(float duration){
     cocos2d::EaseExponentialOut *flyInEase = cocos2d::EaseExponentialOut::create(flyIn);
     
     runActionOnAllSpritesSequentiallyReverse(flyInEase, duration);
-
+    
 }
 
 void CCLabelBMFontAnimated::animateInFlyInFromTop(float duration){
@@ -363,7 +401,7 @@ void CCLabelBMFontAnimated::animateInFlyInFromTop(float duration){
     cocos2d::EaseExponentialOut *flyInEase = cocos2d::EaseExponentialOut::create(flyIn);
     
     runActionOnAllSpritesSequentially(flyInEase, duration);
-
+    
 }
 
 void CCLabelBMFontAnimated::animateInFlyInFromBottom(float duration){
@@ -392,7 +430,7 @@ void CCLabelBMFontAnimated::animateInDropFromTop(float duration){
     cocos2d::EaseBounceOut *flyInEase = cocos2d::EaseBounceOut::create(flyIn);
     
     runActionOnAllSpritesSequentially(flyInEase, duration);
-
+    
 }
 
 void CCLabelBMFontAnimated::animateInSwell(float duration){
@@ -402,28 +440,29 @@ void CCLabelBMFontAnimated::animateInSwell(float duration){
     cocos2d::ScaleTo *scaleUp = cocos2d::ScaleTo::create(0.2, 1.5);
     cocos2d::ScaleTo *scaleDown = cocos2d::ScaleTo::create(0.2, 1);
     cocos2d::Sequence *scaleSeq = cocos2d::Sequence::create(scaleUp, scaleDown, NULL);
-        
+    
     runActionOnAllSpritesSequentially(scaleSeq, duration);
-
+    
 }
 
 void CCLabelBMFontAnimated::animateInRevealFromLeft(float duration){
     
     //set all chars opacity to zero, apart from first
     setAllCharsOpacity(0);
-    cocos2d::Sprite *firstChar = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(0);
+    cocos2d::Sprite *firstChar = getLetter(0);
     firstChar->setOpacity(255);
     //make sure the first character has higher z order than the rest, reset after the animation
     cocos2d::DelayTime *delay = cocos2d::DelayTime::create(duration);
     cocos2d::CallFunc *resetZ = cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::reorderChild, this, firstChar, firstChar->getZOrder()));
+
     cocos2d::Sequence *resetZAfterAnimation = cocos2d::Sequence::create(delay, resetZ, NULL);
     this->reorderChild(firstChar, firstChar->getZOrder()+10);
     firstChar->runAction(resetZAfterAnimation);
-
+    
     //reveal each char from the behind the first
-    for (int i = 1; i < getChildren()->count(); i++) {
+    for (int i = 1; i < numLetters(); i++) {
         
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         
         cocos2d::MoveTo *move = cocos2d::MoveTo::create(duration, charSprite->getPosition());
         cocos2d::EaseExponentialOut *moveEase = cocos2d::EaseExponentialOut::create(move);
@@ -433,7 +472,7 @@ void CCLabelBMFontAnimated::animateInRevealFromLeft(float duration){
         
         charSprite->setPosition(cocos2d::Point(firstChar->getPosition().x, charSprite->getPosition().y));
         charSprite->runAction(moveAndFade);
-    
+        
     }
     
 }
@@ -445,33 +484,33 @@ void CCLabelBMFontAnimated::animateSwell(float duration){
     cocos2d::Sequence *scaleSeq = cocos2d::Sequence::create(scaleUp, scaleDown, NULL);
     
     runActionOnAllSpritesSequentially(scaleSeq, duration);
-
+    
 }
 
 void CCLabelBMFontAnimated::animateJump(float duration, float height){
-
-    const int numChars = getChildren()->count();
     
-    for (int i = 0; i < getChildren()->count(); i++) {
+    const int numChars = numLetters();
+    
+    for (int i = 0; i < numLetters(); i++) {
         
         
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         
         cocos2d::DelayTime *delay = cocos2d::DelayTime::create((duration/(numChars-1)) *i);
         cocos2d::JumpTo *jump = cocos2d::JumpTo::create(0.5, charSprite->getPosition(), height, 1);
         cocos2d::Sequence *delayThenJump = cocos2d::Sequence::create(delay, jump, NULL);
         charSprite->runAction(delayThenJump);
-    
+        
     }
     
     
 }
 
 void CCLabelBMFontAnimated::animateStretchElastic(float stretchDuration, float releaseDuration, float stretchAmount){
-
-    for (int i = 0; i < getChildren()->count(); i++) {
+    
+    for (int i = 0; i < numLetters(); i++) {
         
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         
         cocos2d::MoveTo *stretch = cocos2d::MoveTo::create(stretchDuration,
                                                            cocos2d::Point((charSprite->getPosition().x - (getContentSize().width/4)) * stretchAmount,
@@ -490,26 +529,26 @@ void CCLabelBMFontAnimated::animateInSpin(float duration, int spins){
     
     setAllCharsOpacity(0);
     
-    for (int i = 0; i < getChildren()->count(); i++) {
+    for (int i = 0; i < numLetters(); i++) {
         
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
+        cocos2d::Sprite *charSprite = getLetter(i);
         
         cocos2d::MoveTo *moveToPosition = cocos2d::MoveTo::create(duration, charSprite->getPosition());
         cocos2d::EaseExponentialOut *moveToPositionEase = cocos2d::EaseExponentialOut::create(moveToPosition);
         float centreX = this->getContentSize().width/2;
         charSprite->setPosition(cocos2d::Point(centreX, charSprite->getPosition().y));
         charSprite->runAction(moveToPositionEase);
-
+        
         cocos2d::RotateBy *counterRotate = cocos2d::RotateBy::create(duration, -360 * spins);
         cocos2d::EaseSineOut *counterRotateEase = cocos2d::EaseSineOut::create(counterRotate);
         charSprite->runAction(counterRotateEase);
         
         cocos2d::FadeIn *fadeIn = cocos2d::FadeIn::create(duration);
         charSprite->runAction(fadeIn);
-
+        
     }
-
-
+    
+    
     //spin the label
     cocos2d::RotateBy *spin = cocos2d::RotateBy::create(duration, 360 * spins);
     cocos2d::EaseSineOut *spinEase = cocos2d::EaseSineOut::create(spin);
@@ -526,7 +565,7 @@ void CCLabelBMFontAnimated::animateInVortex(float duration, int spins){
 
 
 void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool createGhosts, float duration, int spins){
-
+    
     
     //fade in the label
     float fadeDuration = duration * 0.25;
@@ -541,7 +580,9 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
         
         for (int i = 0; i < numGhosts; i++) {
             
-            CCLabelBMFontAnimated *ghostLabel = CCLabelBMFontAnimated::create(getString(), getFntFile(), getContentSize().width*2, cocos2d::kCCTextAlignmentCenter);
+            CCLabelBMFontAnimated *ghostLabel = CCLabelBMFontAnimated::createWithBMFont(getBMFontFilePath(), getString(), cocos2d::kCCTextAlignmentCenter, getContentSize().width*2, cocos2d::Vec2(0,0));
+            
+           // CCLabelBMFontAnimated *ghostLabel = CCLabelBMFontAnimated::create(getString(), getBMFontFilePath(), getContentSize().width*2, cocos2d::kCCTextAlignmentCenter);
             ghostLabel->setOpacity(ghostMaxOpacity/(i+1));
             ghostLabel->setPosition(this->getPosition());
             this->getParent()->addChild(ghostLabel);
@@ -551,7 +592,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
         
     }
     
-    for (int i = 0; i < getChildren()->count(); i++) {
+    for (int i = 0; i < numLetters(); i++) {
         
         //Alter the number of spins on some characters for variation
         int charSpins = spins;
@@ -567,20 +608,20 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
         float letterDuration = duration + staggerAmount;
         
         float spinDuration = letterDuration/charSpins;
-
         
-        cocos2d::Sprite *charSprite = (cocos2d::Sprite*)getChildren()->getObjectAtIndex(i);
-    
+        
+        cocos2d::Sprite *charSprite = getLetter(i);
+        
         float radius = fabs((this->getContentSize().width/2) - charSprite->getPosition().x);
         float squareLength = sqrtf((radius*radius)/2);
         float arcAmount = radius - squareLength;
         
         float segmentDuration = spinDuration*0.25;
         
-        cocos2d::Array *spinActions = cocos2d::Array::create();
+        cocos2d::Vector<cocos2d::FiniteTimeAction*> spinActions;
         
-            for (int s = 0; s < charSpins; s++){
-          
+        for (int s = 0; s < charSpins; s++){
+            
             /*
              Spin in a circular motion. Circle is split into 4 segments.
              Segment 1 is the NW arc of the circle
@@ -588,7 +629,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
              Segment 3 is the SW arc of the circle
              Segment 4 is the SE arc of the circle
              */
-                
+            
             //segment 4
             cocos2d::MoveBy *segment4Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Point(-radius, -radius));
             cocos2d::MoveBy *segment4PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(arcAmount, -arcAmount));
@@ -606,7 +647,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
             cocos2d::EaseSineIn *segment3NegativeArcEase = cocos2d::EaseSineIn::create(segment3NegativeArc);
             cocos2d::Sequence *segment3Arc = cocos2d::Sequence::create(segment3PositiveArcEase, segment3NegativeArcEase, NULL);
             cocos2d::Spawn *segment3Action = cocos2d::Spawn::create(segment3Straight, segment3Arc, NULL);
-
+            
             //segment 1
             cocos2d::MoveBy *segment1Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Point(radius, radius));
             cocos2d::MoveBy *segment1PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(-arcAmount, arcAmount));
@@ -615,7 +656,7 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
             cocos2d::EaseSineIn *segment1NegativeArcEase = cocos2d::EaseSineIn::create(segment1NegativeArc);
             cocos2d::Sequence *segment1Arc = cocos2d::Sequence::create(segment1PositiveArcEase, segment1NegativeArcEase, NULL);
             cocos2d::Spawn *segment1Action = cocos2d::Spawn::create(segment1Straight, segment1Arc, NULL);
-
+            
             //segment 2
             cocos2d::MoveBy *segment2Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Point(radius, -radius));
             cocos2d::MoveBy *segment2PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(arcAmount, arcAmount));
@@ -624,9 +665,9 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
             cocos2d::EaseSineIn *segment2NegativeArcEase = cocos2d::EaseSineIn::create(segment2NegativeArc);
             cocos2d::Sequence *segment2Arc = cocos2d::Sequence::create(segment2PositiveArcEase, segment2NegativeArcEase, NULL);
             cocos2d::Spawn *segment2Action = cocos2d::Spawn::create(segment2Straight, segment2Arc, NULL);
-
+            
             cocos2d::Sequence *spinAction;
-                
+            
             //Depending on if the letter is to the left or right of the centre of the label, the segments will need to be in different orders:
             
             if ((this->getContentSize().width/2) < charSprite->getPosition().x) {
@@ -635,33 +676,34 @@ void CCLabelBMFontAnimated::animateInVortex(bool removeOnCompletion, bool create
             else{
                 spinAction = cocos2d::Sequence::create(segment1Action, segment2Action, segment4Action, segment3Action, NULL);
             }
-        
-                
-            spinActions->addObject(spinAction);
-                
+            
+            
+            spinActions.pushBack(spinAction);
+            
             
         }
         
         cocos2d::Sequence *animation = cocos2d::Sequence::create(spinActions);
         cocos2d::EaseSineOut *animationEase = cocos2d::EaseSineOut::create(animation);
-    
-        charSprite->runAction(animationEase);
- 
         
-    
+        charSprite->runAction(animationEase);
+        
+        
+        
     }
-
+    
     if (removeOnCompletion) {
+            
         cocos2d::DelayTime *waitForAnimation = cocos2d::DelayTime::create(duration * 3);
         cocos2d::CallFunc *remove = cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::removeFromParent, this));
         cocos2d::Sequence *waitThenRemove = cocos2d::Sequence::create(waitForAnimation, remove, NULL);
         this->runAction(waitThenRemove);
     }
-
+    
 }
 
 void CCLabelBMFontAnimated::animateRainbow(float duration){
-   
+    
     const float tintDuration = 0.2;
     
     cocos2d::TintTo *red = cocos2d::TintTo::create(tintDuration, 255, 0, 0);
@@ -676,17 +718,6 @@ void CCLabelBMFontAnimated::animateRainbow(float duration){
     cocos2d::Sequence *rainbow = cocos2d::Sequence::create(red, orange, yellow, green, blue, purple, pink, white, NULL);
     runActionOnAllSpritesSequentially(rainbow, duration);
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
