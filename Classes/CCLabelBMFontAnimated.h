@@ -82,7 +82,6 @@ public:
     
 private:
     
-    int numLetters();    
     void animateInVortex(bool removeOnCompletion, bool createGhosts, float duration, int spins);
     
 };
