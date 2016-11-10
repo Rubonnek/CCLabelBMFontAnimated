@@ -232,19 +232,30 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTim
         cocos2d::Sequence *delayAndAction = cocos2d::Sequence::create(delay, actionCopy, NULL);
         cocos2d::Sprite *charSprite = getLetter(i);
 
-        if (i == numChars-1) { //if is the last character, run the call func actions
+		if (i == numChars-1) { //if is the last character, run the call func actions
 
-            cocos2d::Vector<cocos2d::FiniteTimeAction*> actionsArray;
-            actionsArray.pushBack(delayAndAction);
+			cocos2d::Vector<cocos2d::FiniteTimeAction*> actionsArray;
+			actionsArray.pushBack(delayAndAction);
 
-            if (callFuncOnCompletion != nullptr) {
-                actionsArray.pushBack(callFuncOnCompletion);
-            }
-            if (removeOnCompletion) {
-                actionsArray.pushBack(cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::removeFromParent, this)));
-            }
-            cocos2d::Sequence *actionsSequence = cocos2d::Sequence::create(actionsArray);
-            charSprite->runAction(actionsSequence);
+			if (callFuncOnCompletion != nullptr) {
+				actionsArray.pushBack(callFuncOnCompletion);
+			}
+			if (removeOnCompletion) {
+				actionsArray.pushBack(cocos2d::CallFunc::create(CC_CALLBACK_0(CCLabelBMFontAnimated::removeFromParent, this)));
+			}
+
+			// TODO: When the last character is a new line, we are not able to
+			// run an action on it. I suppose we can't because there's nothing
+			// getting rendered. In any case, I won't need to run an action on
+			// that last newline character. Let's just cicunvent the issue for now.
+			if (_utf16Text[i] == '\n')
+			{
+				charSprite = getLetter(i - 1);
+				charSprite->stopAllActions();
+			}
+
+			cocos2d::Sequence *actionsSequence = cocos2d::Sequence::create(actionsArray);
+			charSprite->runAction(actionsSequence);
         }
         else{ //if is not the last character, just run the action
             if (_utf16Text[i] != '\n') //both _label and _currentUTF16String has been made public!!!!
