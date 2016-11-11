@@ -43,20 +43,12 @@ class CCLabelBMFontAnimated : public cocos2d::Label
 
 		//FUNCTIONS TO RUN CUSTOM ACTIONS ON CHARATER SPRITES
 		void runActionOnSpriteAtIndex(int index, cocos2d::FiniteTimeAction* action);
-
-		void runActionOnAllSprites(cocos2d::Action* action);
-		void runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion);
-		void runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion);
+		void runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
 		void stopActionsOnAllSprites();
+		//For the 'run actions sequentially' functions, duration refers to the total time to complete actions on all letters, minus the duration of the action itself
+		void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
+		void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
 
-		//for the 'run actions sequentially' functions, duration refers to the total time to complete actions on all letters, minus the duration of the action itself
-		void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion);
-		void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion);
-		void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration);
-
-		void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion);
-		void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion);
-		void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration);
 
 		//ANIMATIONS
 

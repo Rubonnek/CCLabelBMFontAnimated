@@ -199,7 +199,6 @@ void CCLabelBMFontAnimated::runActionOnAllSprites(cocos2d::Action* action, bool 
 			if (callFuncOnCompletion != nullptr)
 			{
 				actionsArray.pushBack((cocos2d::FiniteTimeAction*)callFuncOnCompletion);
-				//actionsArray->addObject(callFuncOnCompletion);
 			}
 			if (removeOnCompletion)
 			{
@@ -208,23 +207,12 @@ void CCLabelBMFontAnimated::runActionOnAllSprites(cocos2d::Action* action, bool 
 			cocos2d::Sequence *actionsSequence = cocos2d::Sequence::create(actionsArray);
 			charSprite->runAction(actionsSequence);
 		}
-		else{ //if is not the last character, just run the action
-			charSprite->runAction(actionCopy);}
+		else
+		{
+			//if i is not the last character, just run the action
+			charSprite->runAction(actionCopy);
+		}
 	}
-}
-
-void CCLabelBMFontAnimated::runActionOnAllSprites(cocos2d::Action* action)
-{
-
-	runActionOnAllSprites(action, false, nullptr);
-
-}
-
-void CCLabelBMFontAnimated::runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion)
-{
-
-	runActionOnAllSprites(action, removeOnCompletion, nullptr);
-
 }
 
 void CCLabelBMFontAnimated::stopActionsOnAllSprites()
@@ -239,8 +227,12 @@ void CCLabelBMFontAnimated::stopActionsOnAllSprites()
 	}
 }
 
+// TODO: Some functions below can only work if the number of characters is 2 or
+// more. I noticed this is not really necessary for all of these functions
+// since this requirement can be dropped. Work on this later on.
+// TL;DR: Remove the numChars < 2 requirement where possible.
 
-void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion)
+void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion /* = false */, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
 {
 
 	const int numChars = getStringLength();
@@ -259,7 +251,8 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTim
 		cocos2d::Sequence *delayAndAction = cocos2d::Sequence::create(delay, actionCopy, NULL);
 		cocos2d::Sprite *charSprite = getLetter(i);
 
-		if (i == numChars-1) { //if is the last character, run the call func actions
+		if (i == numChars-1) //if i is the last character, run the call func actions
+		{
 
 			cocos2d::Vector<cocos2d::FiniteTimeAction*> actionsArray;
 			actionsArray.pushBack(delayAndAction);
@@ -293,20 +286,6 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTim
 		}
 
 	}
-}
-
-void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion)
-{
-
-	runActionOnAllSpritesSequentially(action, duration, removeOnCompletion, nullptr);
-
-}
-
-void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration)
-{
-
-	runActionOnAllSpritesSequentially(action, duration, false, nullptr);
-
 }
 
 void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion)
@@ -349,21 +328,6 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::Fi
 	}
 
 }
-
-void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion)
-{
-
-	runActionOnAllSpritesSequentiallyReverse(action, duration, removeOnCompletion, nullptr);
-
-}
-
-void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration)
-{
-
-	runActionOnAllSpritesSequentiallyReverse(action, duration, false, nullptr);
-
-}
-
 
 #pragma mark Animations
 
