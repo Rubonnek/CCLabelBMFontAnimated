@@ -177,7 +177,7 @@ void CCLabelBMFontAnimated::runActionOnSpriteAtIndex(int index, cocos2d::FiniteT
 }
 
 
-void CCLabelBMFontAnimated::runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion)
+void CCLabelBMFontAnimated::runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion /* = false */, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
 {
 
 	const int numChars = getStringLength();
@@ -288,7 +288,7 @@ void CCLabelBMFontAnimated::runActionOnAllSpritesSequentially(cocos2d::FiniteTim
 	}
 }
 
-void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion, cocos2d::CallFunc *callFuncOnCompletion)
+void CCLabelBMFontAnimated::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion /* = false */, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
 {
 
 	const int numChars = getStringLength();
