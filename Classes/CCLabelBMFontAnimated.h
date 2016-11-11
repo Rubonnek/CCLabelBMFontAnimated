@@ -39,7 +39,7 @@ class CCLabelBMFontAnimated : public cocos2d::Label
 		void setAllCharsScale(float s);
 		void setAllCharsOpacity(float o);
 		void setAllCharsRotation(float r);
-		void offsetAllCharsPositionBy(cocos2d::Point offset);
+		void offsetAllCharsPositionBy(cocos2d::Vec2 offset);
 
 		//FUNCTIONS TO RUN CUSTOM ACTIONS ON CHARATER SPRITES
 		void runActionOnSpriteAtIndex(int index, cocos2d::FiniteTimeAction* action);

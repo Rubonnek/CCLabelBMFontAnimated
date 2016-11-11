@@ -147,7 +147,7 @@ void CCLabelBMFontAnimated::setAllCharsRotation(float r)
 	}
 }
 
-void CCLabelBMFontAnimated::offsetAllCharsPositionBy(cocos2d::Point offset)
+void CCLabelBMFontAnimated::offsetAllCharsPositionBy(cocos2d::Vec2 offset)
 {
 
 	const int numChars = getStringLength();
@@ -155,7 +155,7 @@ void CCLabelBMFontAnimated::offsetAllCharsPositionBy(cocos2d::Point offset)
 	for (int i = 0; i < numChars; i++)
 	{
 		cocos2d::Sprite *charSprite = getLetter(i);
-		charSprite->setPosition(cocos2d::Point(charSprite->getPosition().x + offset.x, charSprite->getPosition().y + offset.y));
+		charSprite->setPosition(cocos2d::Vec2(charSprite->getPosition().x + offset.x, charSprite->getPosition().y + offset.y));
 	}
 }
 
@@ -373,21 +373,21 @@ void CCLabelBMFontAnimated::flyPastAndRemove()
 	cocos2d::Size visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
 	float rescaleFactor = 1/getScale(); //if the label has been scaled down, all the action coordinates will be too small, rescale factor scales them up
 
-	offsetAllCharsPositionBy(cocos2d::Point(-visibleSize.width * rescaleFactor, 0));
+	offsetAllCharsPositionBy(cocos2d::Vec2(-visibleSize.width * rescaleFactor, 0));
 
 	float centrePortion = visibleSize.width*0.05;
 	float centreSlowTime = 0.9;
 
-	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(0.5, cocos2d::Point((visibleSize.width* rescaleFactor) -((centrePortion* rescaleFactor)/2), 0));
+	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(0.5, cocos2d::Vec2((visibleSize.width* rescaleFactor) -((centrePortion* rescaleFactor)/2), 0));
 	cocos2d::EaseExponentialInOut *flyInEase = cocos2d::EaseExponentialInOut::create(flyIn);
 
-	cocos2d::MoveBy *centreSlowMove = cocos2d::MoveBy::create(centreSlowTime, cocos2d::Point(centrePortion * rescaleFactor, 0));
+	cocos2d::MoveBy *centreSlowMove = cocos2d::MoveBy::create(centreSlowTime, cocos2d::Vec2(centrePortion * rescaleFactor, 0));
 	cocos2d::ScaleTo *scaleUp = cocos2d::ScaleTo::create(centreSlowTime/2, 1.5);
 	cocos2d::ScaleTo *scaleDown = cocos2d::ScaleTo::create(centreSlowTime/2, 1);
 	cocos2d::Sequence *swell = cocos2d::Sequence::create(scaleUp, scaleDown, NULL);
 	cocos2d::Spawn *centreMoveAndSwell = cocos2d::Spawn::create(centreSlowMove, swell, NULL);
 
-	cocos2d::MoveBy *flyOut = cocos2d::MoveBy::create(0.5, cocos2d::Point((visibleSize.width*rescaleFactor) -((centrePortion*rescaleFactor)/2), 0));
+	cocos2d::MoveBy *flyOut = cocos2d::MoveBy::create(0.5, cocos2d::Vec2((visibleSize.width*rescaleFactor) -((centrePortion*rescaleFactor)/2), 0));
 	cocos2d::EaseExponentialInOut *flyOutEase = cocos2d::EaseExponentialInOut::create(flyOut);
 
 	cocos2d::Sequence *flyPast = cocos2d::Sequence::create(flyInEase, centreMoveAndSwell, flyOutEase, NULL);
@@ -414,9 +414,9 @@ void CCLabelBMFontAnimated::animateInFlyInFromLeft(float duration)
 	cocos2d::Size visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
 	float rescaleFactor = 1/getScale(); //if the label has been scaled down, all the action coordinates will be too small, rescale factor scales them up
 	float offsetX = visibleSize.width * rescaleFactor;
-	offsetAllCharsPositionBy(cocos2d::Point(-offsetX, 0));
+	offsetAllCharsPositionBy(cocos2d::Vec2(-offsetX, 0));
 
-	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Point(offsetX, 0));
+	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Vec2(offsetX, 0));
 	cocos2d::EaseExponentialOut *flyInEase = cocos2d::EaseExponentialOut::create(flyIn);
 
 	runActionOnAllSpritesSequentially(flyInEase, duration);
@@ -430,9 +430,9 @@ void CCLabelBMFontAnimated::animateInFlyInFromRight(float duration)
 	cocos2d::Size visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
 	float rescaleFactor = 1/getScale(); //if the label has been scaled down, all the action coordinates will be too small, rescale factor scales them up
 	float offsetX = visibleSize.width * rescaleFactor;
-	offsetAllCharsPositionBy(cocos2d::Point(offsetX, 0));
+	offsetAllCharsPositionBy(cocos2d::Vec2(offsetX, 0));
 
-	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Point(-offsetX, 0));
+	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Vec2(-offsetX, 0));
 	cocos2d::EaseExponentialOut *flyInEase = cocos2d::EaseExponentialOut::create(flyIn);
 
 	runActionOnAllSpritesSequentiallyReverse(flyInEase, duration);
@@ -445,9 +445,9 @@ void CCLabelBMFontAnimated::animateInFlyInFromTop(float duration)
 	cocos2d::Size visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
 	float rescaleFactor = 1/getScale(); //if the label has been scaled down, all the action coordinates will be too small, rescale factor scales them up
 	float offsetY = visibleSize.height * rescaleFactor;
-	offsetAllCharsPositionBy(cocos2d::Point(0, offsetY));
+	offsetAllCharsPositionBy(cocos2d::Vec2(0, offsetY));
 
-	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Point(0, -offsetY));
+	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Vec2(0, -offsetY));
 	cocos2d::EaseExponentialOut *flyInEase = cocos2d::EaseExponentialOut::create(flyIn);
 
 	runActionOnAllSpritesSequentially(flyInEase, duration);
@@ -460,9 +460,9 @@ void CCLabelBMFontAnimated::animateInFlyInFromBottom(float duration)
 	cocos2d::Size visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
 	float rescaleFactor = 1/getScale(); //if the label has been scaled down, all the action coordinates will be too small, rescale factor scales them up
 	float offsetY = visibleSize.height * rescaleFactor;
-	offsetAllCharsPositionBy(cocos2d::Point(0, -offsetY));
+	offsetAllCharsPositionBy(cocos2d::Vec2(0, -offsetY));
 
-	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Point(0, offsetY));
+	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Vec2(0, offsetY));
 	cocos2d::EaseExponentialOut *flyInEase = cocos2d::EaseExponentialOut::create(flyIn);
 
 	runActionOnAllSpritesSequentially(flyInEase, duration);
@@ -476,9 +476,9 @@ void CCLabelBMFontAnimated::animateInDropFromTop(float duration)
 	cocos2d::Size visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
 	float rescaleFactor = 1/getScale(); //if the label has been scaled down, all the action coordinates will be too small, rescale factor scales them up
 	float offsetY = visibleSize.height * rescaleFactor;
-	offsetAllCharsPositionBy(cocos2d::Point(0, offsetY));
+	offsetAllCharsPositionBy(cocos2d::Vec2(0, offsetY));
 
-	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Point(0, -offsetY));
+	cocos2d::MoveBy *flyIn = cocos2d::MoveBy::create(1, cocos2d::Vec2(0, -offsetY));
 	cocos2d::EaseBounceOut *flyInEase = cocos2d::EaseBounceOut::create(flyIn);
 
 	runActionOnAllSpritesSequentially(flyInEase, duration);
@@ -525,7 +525,7 @@ void CCLabelBMFontAnimated::animateInRevealFromLeft(float duration)
 		cocos2d::EaseExponentialOut *fadeEase = cocos2d::EaseExponentialOut::create(fadeIn);
 		cocos2d::Spawn *moveAndFade = cocos2d::Spawn::create(moveEase, fadeEase, NULL);
 
-		charSprite->setPosition(cocos2d::Point(firstChar->getPosition().x, charSprite->getPosition().y));
+		charSprite->setPosition(cocos2d::Vec2(firstChar->getPosition().x, charSprite->getPosition().y));
 		charSprite->runAction(moveAndFade);
 
 	}
@@ -567,7 +567,7 @@ void CCLabelBMFontAnimated::animateStretchElastic(float stretchDuration, float r
 		cocos2d::Sprite *charSprite = getLetter(i);
 
 		cocos2d::MoveTo *stretch = cocos2d::MoveTo::create(stretchDuration,
-				cocos2d::Point((charSprite->getPosition().x - (getContentSize().width/4)) * stretchAmount,
+				cocos2d::Vec2((charSprite->getPosition().x - (getContentSize().width/4)) * stretchAmount,
 					charSprite->getPosition().y));
 		cocos2d::MoveTo *release = cocos2d::MoveTo::create(releaseDuration, charSprite->getPosition());
 		cocos2d::EaseElasticOut *releaseElastic = cocos2d::EaseElasticOut::create(release);
@@ -592,7 +592,7 @@ void CCLabelBMFontAnimated::animateInSpin(float duration, int spins)
 		cocos2d::MoveTo *moveToPosition = cocos2d::MoveTo::create(duration, charSprite->getPosition());
 		cocos2d::EaseExponentialOut *moveToPositionEase = cocos2d::EaseExponentialOut::create(moveToPosition);
 		float centreX = this->getContentSize().width/2;
-		charSprite->setPosition(cocos2d::Point(centreX, charSprite->getPosition().y));
+		charSprite->setPosition(cocos2d::Vec2(centreX, charSprite->getPosition().y));
 		charSprite->runAction(moveToPositionEase);
 
 		cocos2d::RotateBy *counterRotate = cocos2d::RotateBy::create(duration, -360 * spins);
@@ -682,37 +682,37 @@ void CCLabelBMFontAnimated::animateInVortex(float duration, int spins, bool remo
 			   */
 
 			//segment 4
-			cocos2d::MoveBy *segment4Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Point(-radius, -radius));
-			cocos2d::MoveBy *segment4PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(arcAmount, -arcAmount));
+			cocos2d::MoveBy *segment4Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Vec2(-radius, -radius));
+			cocos2d::MoveBy *segment4PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Vec2(arcAmount, -arcAmount));
 			cocos2d::EaseSineOut *segment4PositiveArcEase = cocos2d::EaseSineOut::create(segment4PositiveArc);
-			cocos2d::MoveBy *segment4NegativeArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(-arcAmount, arcAmount));
+			cocos2d::MoveBy *segment4NegativeArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Vec2(-arcAmount, arcAmount));
 			cocos2d::EaseSineIn *segment4NegativeArcEase = cocos2d::EaseSineIn::create(segment4NegativeArc);
 			cocos2d::Sequence *segment4Arc = cocos2d::Sequence::create(segment4PositiveArcEase, segment4NegativeArcEase, NULL);
 			cocos2d::Spawn *segment4Action = cocos2d::Spawn::create(segment4Straight, segment4Arc, NULL);
 
 			//segment 3
-			cocos2d::MoveBy *segment3Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Point(-radius, radius));
-			cocos2d::MoveBy *segment3PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(-arcAmount, -arcAmount));
+			cocos2d::MoveBy *segment3Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Vec2(-radius, radius));
+			cocos2d::MoveBy *segment3PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Vec2(-arcAmount, -arcAmount));
 			cocos2d::EaseSineOut *segment3PositiveArcEase = cocos2d::EaseSineOut::create(segment3PositiveArc);
-			cocos2d::MoveBy *segment3NegativeArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(arcAmount, arcAmount));
+			cocos2d::MoveBy *segment3NegativeArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Vec2(arcAmount, arcAmount));
 			cocos2d::EaseSineIn *segment3NegativeArcEase = cocos2d::EaseSineIn::create(segment3NegativeArc);
 			cocos2d::Sequence *segment3Arc = cocos2d::Sequence::create(segment3PositiveArcEase, segment3NegativeArcEase, NULL);
 			cocos2d::Spawn *segment3Action = cocos2d::Spawn::create(segment3Straight, segment3Arc, NULL);
 
 			//segment 1
-			cocos2d::MoveBy *segment1Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Point(radius, radius));
-			cocos2d::MoveBy *segment1PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(-arcAmount, arcAmount));
+			cocos2d::MoveBy *segment1Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Vec2(radius, radius));
+			cocos2d::MoveBy *segment1PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Vec2(-arcAmount, arcAmount));
 			cocos2d::EaseSineOut *segment1PositiveArcEase = cocos2d::EaseSineOut::create(segment1PositiveArc);
-			cocos2d::MoveBy *segment1NegativeArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(arcAmount, -arcAmount));
+			cocos2d::MoveBy *segment1NegativeArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Vec2(arcAmount, -arcAmount));
 			cocos2d::EaseSineIn *segment1NegativeArcEase = cocos2d::EaseSineIn::create(segment1NegativeArc);
 			cocos2d::Sequence *segment1Arc = cocos2d::Sequence::create(segment1PositiveArcEase, segment1NegativeArcEase, NULL);
 			cocos2d::Spawn *segment1Action = cocos2d::Spawn::create(segment1Straight, segment1Arc, NULL);
 
 			//segment 2
-			cocos2d::MoveBy *segment2Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Point(radius, -radius));
-			cocos2d::MoveBy *segment2PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(arcAmount, arcAmount));
+			cocos2d::MoveBy *segment2Straight = cocos2d::MoveBy::create(segmentDuration, cocos2d::Vec2(radius, -radius));
+			cocos2d::MoveBy *segment2PositiveArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Vec2(arcAmount, arcAmount));
 			cocos2d::EaseSineOut *segment2PositiveArcEase = cocos2d::EaseSineOut::create(segment2PositiveArc);
-			cocos2d::MoveBy *segment2NegativeArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Point(-arcAmount, -arcAmount));
+			cocos2d::MoveBy *segment2NegativeArc = cocos2d::MoveBy::create(segmentDuration/2, cocos2d::Vec2(-arcAmount, -arcAmount));
 			cocos2d::EaseSineIn *segment2NegativeArcEase = cocos2d::EaseSineIn::create(segment2NegativeArc);
 			cocos2d::Sequence *segment2Arc = cocos2d::Sequence::create(segment2PositiveArcEase, segment2NegativeArcEase, NULL);
 			cocos2d::Spawn *segment2Action = cocos2d::Spawn::create(segment2Straight, segment2Arc, NULL);
