@@ -2,7 +2,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-#include "CCLabelBMFontAnimated.h"
+#include "CCAnimatedLabel.h"
 
 class HelloWorld : public cocos2d::Layer
 {
@@ -25,7 +25,7 @@ private:
     cocos2d::Size visibleSize;
     cocos2d::Point origin;
     
-    CCLabelBMFontAnimated *label;
+    AnimatedLabel *label;
     cocos2d::Label *title;
     
     int step;

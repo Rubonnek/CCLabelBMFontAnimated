@@ -22,13 +22,13 @@
 #include <stdio.h>
 #include "cocos2d.h"
 
-class CCLabelBMFontAnimated : public cocos2d::Label
+class AnimatedLabel : public cocos2d::Label
 {
 	public:
 
 		// ONLY USE THIS FUNCTION FOR CREATION
-		static CCLabelBMFontAnimated* createWithBMFont(const std::string& bmfontFilePath, const std::string& text,const cocos2d::TextHAlignment& alignment /* = TextHAlignment::LEFT */, int maxLineWidth /* = 0 */, const cocos2d::Vec2& imageOffset /* = Vec2::ZERO */);
-		static CCLabelBMFontAnimated* createWithTTF(const std::string& text, const std::string& fontFile, float fontSize, const cocos2d::Size& dimensions /* = Size::ZERO */, cocos2d::TextHAlignment hAlignment /* = TextHAlignment::LEFT */, cocos2d::TextVAlignment vAlignment /* = TextVAlignment::TOP */);
+		static AnimatedLabel* createWithBMFont(const std::string& bmfontFilePath, const std::string& text,const cocos2d::TextHAlignment& alignment /* = TextHAlignment::LEFT */, int maxLineWidth /* = 0 */, const cocos2d::Vec2& imageOffset /* = Vec2::ZERO */);
+		static AnimatedLabel* createWithTTF(const std::string& text, const std::string& fontFile, float fontSize, const cocos2d::Size& dimensions /* = Size::ZERO */, cocos2d::TextHAlignment hAlignment /* = TextHAlignment::LEFT */, cocos2d::TextVAlignment vAlignment /* = TextVAlignment::TOP */);
 
 		//FUNCTIONS TO SET BASIC CHARACTER SPRITE PROPERTIES AT INDEX
 		void setCharScale(int index, float s);

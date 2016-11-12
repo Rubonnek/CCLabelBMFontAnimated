@@ -59,16 +59,16 @@ void HelloWorld::runNextAnimation(){
     float titleY = 0.9;
     
     if(step != 19) {
-        label = CCLabelBMFontAnimated::createWithBMFont("fonts/NBFont1.fnt", "", cocos2d::TextHAlignment::CENTER, visibleSize.width, cocos2d::Vec2(0,0));
+        label = AnimatedLabel::createWithBMFont("fonts/NBFont1.fnt", "", cocos2d::TextHAlignment::CENTER, visibleSize.width, cocos2d::Vec2(0,0));
         label->setScale(labelScale);
     } else {
-        label = CCLabelBMFontAnimated::createWithTTF("", "fonts/arial.ttf", 50.0f,
+        label = AnimatedLabel::createWithTTF("", "fonts/arial.ttf", 50.0f,
             Size(visibleSize.width, 40),
             cocos2d::TextHAlignment::CENTER, cocos2d::TextVAlignment::TOP);
             label->setTextColor(Color4B::WHITE);
     }
 
-    //label = CCLabelBMFontAnimated::create("", "NBFont1.fnt", visibleSize.width, cocos2d::kCCTextAlignmentCenter);
+    //label = AnimatedLabel::create("", "NBFont1.fnt", visibleSize.width, cocos2d::kCCTextAlignmentCenter);
     label->setPosition(cocos2d::Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2));
     this->addChild(label);
     
@@ -94,116 +94,116 @@ void HelloWorld::runNextAnimation(){
     
     //animate in fly in from left
     if (step == 1) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Fly In From Left");
         label->animateInFlyInFromLeft(3);
     }
     //animate in fly in from left
     else if (step == 2) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Fly In From Right");
         label->animateInFlyInFromRight(3);
     }
     //animate in fly in from top
     else if (step == 3) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Fly In From Top");
         label->animateInFlyInFromTop(3);
     }
     //animate in fly in from bottom
     else if (step == 4) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Fly In From Bottom");
         label->animateInFlyInFromBottom(3);
     }
     //animate in typeWriter
     else if (step == 5) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Animate In Typewriter");
         label->animateInTypewriter(2);
     }
     //animate in drop from top
     else if (step == 6) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Animate In Drop From Top");
         label->animateInDropFromTop(2);
     }
     //animate in swell
     else if (step == 7) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Animate In Swell");
         label->animateInSwell(2);
     }
     //animate in reveal from left
     else if (step == 8) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Animate In Reveal From Left");
         label->animateInRevealFromLeft(1.5);
     }
     //animate in spin
     else if (step == 9) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Animate In Spin");
         label->animateInSpin(4, 4);
     }
     //animate in vortex
     else if (step == 10) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Animate In Vortex");
         label->animateInVortex(1, 4);
     }
     //animate swell
     else if (step == 11) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Animate Swell");
         label->animateSwell(1.5);
     }
     //animate jump
     else if (step == 12) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Animate Jump");
         label->animateJump(2, 25);
     }
     //animate stretch eleastic
     else if (step == 13) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Animate Stretch Elastic");
         label->animateStretchElastic(0.5, 2, 2);
     }
     //animate rainbow
     else if (step == 14) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Animate Rainbow");
         label->animateRainbow(2.5);
     }
     
     //fly past
     else if (step == 15) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Fly Past");
         label->flyPastAndRemove();
     }
     //run custom action on all chars
     else if (step == 16) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Run Custom Action On All Characters");
         label->runActionOnAllSprites(customAction);
     }
     //run custom action on all chars sequentially
     else if (step == 17) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Run Custom Action On All Characters Sequentially");
         label->runActionOnAllSpritesSequentially(customAction, 4);
     }
     //run custom action on all chars sequentially reverse
     else if (step == 18) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("Run Custom Action On All Characters Sequentially Reverse");
         label->runActionOnAllSpritesSequentiallyReverse(customAction, 4);
     }
     // run ttf animation
     else if (step == 19) {
-        label->setString("CCLabelBMFontAnimated");
+        label->setString("AnimatedLabel");
         title->setString("And ttf fonts work as well!");
         label->runActionOnAllSpritesSequentially(customAction, 4);
     }
