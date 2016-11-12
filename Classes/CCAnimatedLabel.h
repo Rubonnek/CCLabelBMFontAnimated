@@ -27,8 +27,8 @@ class AnimatedLabel : public cocos2d::Label
 	public:
 
 		// ONLY USE THIS FUNCTION FOR CREATION
-		static AnimatedLabel* createWithBMFont(const std::string& bmfontFilePath, const std::string& text,const cocos2d::TextHAlignment& alignment /* = TextHAlignment::LEFT */, int maxLineWidth /* = 0 */, const cocos2d::Vec2& imageOffset /* = Vec2::ZERO */);
-		static AnimatedLabel* createWithTTF(const std::string& text, const std::string& fontFile, float fontSize, const cocos2d::Size& dimensions /* = Size::ZERO */, cocos2d::TextHAlignment hAlignment /* = TextHAlignment::LEFT */, cocos2d::TextVAlignment vAlignment /* = TextVAlignment::TOP */);
+		static AnimatedLabel* createWithBMFont(const std::string& bmfontFilePath, const std::string& text,const cocos2d::TextHAlignment& alignment = cocos2d::TextHAlignment::LEFT, int maxLineWidth = 0, const cocos2d::Vec2& imageOffset = cocos2d::Vec2::ZERO);
+		static AnimatedLabel* createWithTTF(const std::string& text, const std::string& fontFile, float fontSize, const cocos2d::Size& dimensions = cocos2d::Size::ZERO, cocos2d::TextHAlignment hAlignment = cocos2d::TextHAlignment::LEFT, cocos2d::TextVAlignment vAlignment = cocos2d::TextVAlignment::TOP);
 
 		//FUNCTIONS TO SET BASIC CHARACTER SPRITE PROPERTIES AT INDEX
 		void setCharScale(int index, float s);
@@ -45,10 +45,12 @@ class AnimatedLabel : public cocos2d::Label
 		void runActionOnSpriteAtIndex(int index, cocos2d::FiniteTimeAction* action);
 		void runActionOnAllSprites(cocos2d::Action* action, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
 		void stopActionsOnAllSprites();
-		//For the 'run actions sequentially' functions, duration refers to the total time to complete actions on all letters, minus the duration of the action itself
+		//For the 'run actions sequentially' functions, the duration refers to the
+		//total time (in seconds) to complete actions on all letters, minus the duration of
+		//the first action which is executed as soon as the label gets added as
+		//a child to the scene.
 		void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
 		void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
-
 
 		//ANIMATIONS
 

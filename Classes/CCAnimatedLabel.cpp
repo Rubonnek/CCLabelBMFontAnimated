@@ -361,7 +361,7 @@ void AnimatedLabel::flyPastAndRemove()
 
 }
 
-void AnimatedLabel::animateInTypewriter(float duration, cocos2d::CallFunc *callFuncOnEach, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
+void AnimatedLabel::animateInTypewriter(float duration, cocos2d::CallFunc *callFuncOnEach /* = nullptr */, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
 {
 	//set all the characters scale to zero
 	setAllCharsScale(0);
