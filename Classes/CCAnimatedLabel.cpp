@@ -369,7 +369,7 @@ void AnimatedLabel::animateInTypewriter(float duration, cocos2d::CallFunc *callF
 	cocos2d::ScaleTo *appear = cocos2d::ScaleTo::create(0, 1);
 	if ( callFuncOnEach != nullptr)
 	{
-		cocos2d::Sequence *appearAndAction = cocos2d::Sequence::create(appear, appearAndAction, nullptr);
+		cocos2d::Sequence *appearAndAction = cocos2d::Sequence::create(appear, callFuncOnEach, nullptr);
 		runActionOnAllSpritesSequentially(appearAndAction, duration, false, callFuncOnCompletion);
 	}
 	else
