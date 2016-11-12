@@ -220,7 +220,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Classes\AppDelegate.h" />
     <ClInclude Include="..\..\Classes\HelloWorldScene.h" />
-    <ClInclude Include="..\..\Classes\CCLabelBMFontAnimated.h" />
+    <ClInclude Include="..\..\Classes\CCAnimatedLabel.h" />
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
@@ -245,7 +245,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\..\Classes\HelloWorldScene.cpp" />
-    <ClCompile Include="..\..\Classes\CCLabelBMFontAnimated.cpp" />
+    <ClCompile Include="..\..\Classes\CCAnimatedLabel.cpp" />
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
