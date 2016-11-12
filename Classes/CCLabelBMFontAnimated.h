@@ -59,7 +59,7 @@ class CCLabelBMFontAnimated : public cocos2d::Label
 		void animateInFlyInFromBottom(float duration);
 
 		//misc animate ins
-		void animateInTypewriter(float duration);
+		void animateInTypewriter(float duration, cocos2d::CallFunc *callFuncOnEach = nullptr, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
 		void animateInDropFromTop(float duration);
 		void animateInSwell(float duration);
 		void animateInRevealFromLeft(float duration);
