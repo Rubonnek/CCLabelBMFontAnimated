@@ -1,7 +1,7 @@
-CCLabelBMFontAnimated
+AnimatedLabel
 =====================
 
-CCLabelBMFontAnimated is a label class for Cocos2d-x, inheriting for LabelBMFont. The primary feature of this class is to easily enable the running of Cocos2d actions on the individual letters of a label.
+AnimatedLabel is a label class for Cocos2d-x, that inherits cocos2d::Label. The primary feature of this class is to easily enable the running of Cocos2d actions on the individual letters of a label.
 
 Actions can be run on an individual letter, on all letters simultaneously, on each letter sequentially, or on each letter sequentially in reverse. When running actions sequentially, a duration can be specified.
 
