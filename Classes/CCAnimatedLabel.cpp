@@ -231,7 +231,7 @@ void AnimatedLabel::stopActionsOnAllSprites()
 // more. I noticed this is not really necessary for all of these functions
 // since this requirement can be dropped. Work on this later on.
 // TL;DR: Remove the numChars < 2 requirement where possible.
-void AnimatedLabel::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion /* = false */, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
+void AnimatedLabel::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, float initialDelay /* = 0.f */, bool removeOnCompletion /* = false */, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
 {
 
 	const int numChars = getStringLength();
@@ -244,7 +244,7 @@ void AnimatedLabel::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction*
 
 	for (int i = 0; i < numChars; ++i)
 	{
-		cocos2d::DelayTime *delay = cocos2d::DelayTime::create((duration/(numChars-1)) *i);
+		cocos2d::DelayTime *delay = cocos2d::DelayTime::create((duration/(numChars-1)) *i + initialDelay);
 		cocos2d::Action *actionCopy = action->clone();
 		cocos2d::Sequence *delayAndAction = cocos2d::Sequence::create(delay, actionCopy, nullptr);
 
@@ -288,7 +288,7 @@ void AnimatedLabel::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction*
 	}
 }
 
-void AnimatedLabel::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion /* = false */, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
+void AnimatedLabel::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, float initialDelay /* = 0.f */, bool removeOnCompletion /* = false */, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
 {
 	const int numChars = getStringLength();
 
@@ -300,7 +300,7 @@ void AnimatedLabel::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTime
 
 	for (int i = 0; i < numChars; ++i)
 	{
-		cocos2d::DelayTime *delay = cocos2d::DelayTime::create((duration/(numChars-1)) *((numChars-1)-i));
+		cocos2d::DelayTime *delay = cocos2d::DelayTime::create((duration/(numChars-1)) *((numChars-1)-i) + initialDelay);
 		cocos2d::Action *actionCopy = action->clone();
 		cocos2d::Sequence *delayAndAction = cocos2d::Sequence::create(delay, actionCopy, nullptr);
 		cocos2d::Sprite *charSprite = getLetter(i);
@@ -357,11 +357,10 @@ void AnimatedLabel::flyPastAndRemove()
 
 	cocos2d::Sequence *flyPast = cocos2d::Sequence::create(flyInEase, centreMoveAndSwell, flyOutEase, nullptr);
 
-	runActionOnAllSpritesSequentiallyReverse(flyPast, 0.7, true, nullptr);
-
+	runActionOnAllSpritesSequentiallyReverse(flyPast, 0.7, 0, true, nullptr);
 }
 
-void AnimatedLabel::animateInTypewriter(float duration, cocos2d::CallFunc *callFuncOnEach /* = nullptr */, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
+void AnimatedLabel::animateInTypewriter(float duration, float initialDelay /* = 0.f */, cocos2d::CallFunc *callFuncOnEach /* = nullptr */, cocos2d::CallFunc *callFuncOnCompletion /* = nullptr */)
 {
 	//set all the characters scale to zero
 	setAllCharsScale(0);
@@ -370,11 +369,11 @@ void AnimatedLabel::animateInTypewriter(float duration, cocos2d::CallFunc *callF
 	if ( callFuncOnEach != nullptr)
 	{
 		cocos2d::Sequence *appearAndAction = cocos2d::Sequence::create(appear, callFuncOnEach, nullptr);
-		runActionOnAllSpritesSequentially(appearAndAction, duration, false, callFuncOnCompletion);
+		runActionOnAllSpritesSequentially(appearAndAction, duration, initialDelay, false, callFuncOnCompletion);
 	}
 	else
 	{
-		runActionOnAllSpritesSequentially(appear, duration, false, callFuncOnCompletion);
+		runActionOnAllSpritesSequentially(appear, duration, initialDelay, false, callFuncOnCompletion);
 	}
 }
 

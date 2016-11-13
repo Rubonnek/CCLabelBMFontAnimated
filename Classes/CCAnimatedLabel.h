@@ -49,8 +49,8 @@ class AnimatedLabel : public cocos2d::Label
 		//total time (in seconds) to complete actions on all letters, minus the duration of
 		//the first action which is executed as soon as the label gets added as
 		//a child to the scene.
-		void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
-		void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
+		void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, float initialDelay = 0.f, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
+		void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, float initialDelay = 0.f, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
 
 		//ANIMATIONS
 
@@ -61,7 +61,7 @@ class AnimatedLabel : public cocos2d::Label
 		void animateInFlyInFromBottom(float duration);
 
 		//misc animate ins
-		void animateInTypewriter(float duration, cocos2d::CallFunc *callFuncOnEach = nullptr, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
+		void animateInTypewriter(float duration, float initialDelay = 0.f, cocos2d::CallFunc *callFuncOnEach = nullptr, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
 		void animateInDropFromTop(float duration);
 		void animateInSwell(float duration);
 		void animateInRevealFromLeft(float duration);
