@@ -60,8 +60,6 @@ AnimatedLabel* AnimatedLabel::createWithTTF(const std::string& text, const std::
 	return nullptr;
 }
 
-#pragma mark - Set Basic Character Properties
-
 void AnimatedLabel::setCharScale(int index, float s)
 {
 
@@ -159,8 +157,6 @@ void AnimatedLabel::offsetAllCharsPositionBy(cocos2d::Vec2 offset)
 	}
 }
 
-
-#pragma mark - Run Custom Actions
 
 void AnimatedLabel::runActionOnSpriteAtIndex(int index, cocos2d::FiniteTimeAction* action)
 {
@@ -329,8 +325,6 @@ void AnimatedLabel::runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTime
 	}
 
 }
-
-#pragma mark Animations
 
 void AnimatedLabel::flyPastAndRemove()
 {
