@@ -49,6 +49,7 @@ class AnimatedLabel : public cocos2d::Label
 		//total time (in seconds) to complete actions on all letters, minus the duration of
 		//the first action which is executed as soon as the label gets added as
 		//a child to the scene.
+		//Note: if there's a need to add a delay to the, using a Node::scheduleOnce will suffice.
 		void runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction* action, float duration, float initialDelay = 0.f, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
 		void runActionOnAllSpritesSequentiallyReverse(cocos2d::FiniteTimeAction* action, float duration, float initialDelay = 0.f, bool removeOnCompletion = false, cocos2d::CallFunc *callFuncOnCompletion = nullptr);
 
