@@ -3,7 +3,7 @@
 
 # But not these files:
 
-# The file we are writing (obviously):
+# Don't ignore the .gitignore (obviously):
 !/.gitignore
 
 # The Game Logic and the Sprites, Sounds, etc:
@@ -11,41 +11,47 @@
 !/Resources/**/*
 !/SVGs/**/*
 !/TTFs/**/*
-
-# Ignore the binary and text files we auto-generate:
-#/Resources/Sprites/**/*
+!/Text/**/*
+!/2DTextures/**/*
 
 # The cmake configuration file:
 !/CMakeLists.txt
+
+# Vim Session and Game Notes:
+!/last_vim_session.vim
+#!/game_notes
+!/game_notes.adoc
+
+# The external editor projects
+!/EditorProjects/**/*
+
+# The Vim - YouCompleteMe configuration file
+!/.ycm_extra_conf.py
 
 # The Android make file and related files (for building the .apk from the command line):
 !/proj.android/jni/Android.mk
 !/proj.android/jni/Application.mk
 !/proj.android/AndroidManifest.xml
 !/proj.android/src/org/cocos2dx/cpp/AppActivity.java
+!/proj.android/ant.properties
 
-# The Android Studio project files
-!/proj.android-studio/build.gradle
-
-# The Microsoft Visual Studio solution (win32):
+# The Microsoft Visual Studio (win32):
 !/proj.win32/*.vcxproj
 !/proj.win32/*.vcxproj.filters
 
-# The Microsoft Visual Studio solution (win8.1-univeral):
-!/proj.win8.1-universal/App.Shared/*.vcxitems
-!/proj.win8.1-universal/App.Shared/*.vcxitems.filters
+# The Microsoft Visual Studio (win8.1-univeral):
+!/proj.win8.1-universal/App.Shared/*.Shared.vcxitems
+!/proj.win8.1-universal/App.Shared/*.Shared.vcxitems.filters
 
-# The Microsoft Visual Studio solution (win10):
+# The Microsoft Visual Studio (win10):
 !/proj.win10/App/*.vcxproj
 !/proj.win10/App/*.vcxproj.filters
 
 # The Xcode project files:
 !/proj.ios_mac/*.xcodeproj/project.pbxproj
 
-# Vim Session and Game Notes:
-!last_vim_session.vim
-!game_notes
-!game_notes.adoc
-
-# Even if they are in subdirectories like the Android.mk and AppActivity.java files above...
+# If any of the files above are under subdirectories, don't ignore them:
 !*/
+
+# Ignore Mac OS .DS_Store files
+**/*.DS_Store
