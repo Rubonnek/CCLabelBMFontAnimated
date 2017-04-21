@@ -114,7 +114,7 @@ void AnimatedLabel::setAllCharsScale(float s)
 
 		//cocos2d::log("desc: %s, index: %d", _label->getDescription().c_str(), i);
 
-		if (_utf16Text[i] != '\n')
+		if (_utf32Text[i] != '\n')
 			charSprite->setScale(s);
 	}
 }
@@ -266,7 +266,7 @@ void AnimatedLabel::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction*
 			// run an action on it. I suppose we can't because there's nothing
 			// getting rendered. In any case, I won't need to run an action on
 			// that last newline character. Let's just cicunvent the issue for now.
-			if (_utf16Text[i] == '\n')
+			if (_utf32Text[i] == '\n')
 			{
 				charSprite = getLetter(i - 1);
 				charSprite->stopAllActions();
@@ -277,7 +277,7 @@ void AnimatedLabel::runActionOnAllSpritesSequentially(cocos2d::FiniteTimeAction*
 		}
 		else //if i is not the last character, just run the action
 		{
-			if (_utf16Text[i] != '\n') //both _label and _currentUTF16String has been made public!!!!
+			if (_utf32Text[i] != '\n') //both _label and _currentUTF16String has been made public!!!!
 				charSprite->runAction(delayAndAction);
 			//cocos2d::log("position: %f, %f, %d", charSprite->getPositionX(), charSprite->getPositionY(), i);
 		}

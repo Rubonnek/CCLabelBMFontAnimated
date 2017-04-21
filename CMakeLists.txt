@@ -125,14 +125,14 @@ endif( WIN32 )
 set(GAME_SRC
 	Classes/AppDelegate.cpp
 	Classes/HelloWorldScene.cpp
-	Classes/CCAnimatedLabel.cpp
+	Classes/AnimatedLabel.cpp
 	${PLATFORM_SPECIFIC_SRC}
 	)
 
 set(GAME_HEADERS
 	Classes/AppDelegate.h
 	Classes/HelloWorldScene.h
-	Classes/CCAnimatedLabel.h
+	Classes/AnimatedLabel.h
 	${PLATFORM_SPECIFIC_HEADERS}
 	)
 
